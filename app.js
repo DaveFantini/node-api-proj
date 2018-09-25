@@ -3,9 +3,15 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
 
 const productRoutes = require ('./api/routes/products');
 const orderRoutes = require ('./api/routes/orders');
+
+mongoose.connect('mongodb://node-shop:' + 
+    process.env.MONGO_ATLAS_PW + 
+    '@node-rest-shop-shard-00-00-hge9w.mongodb.net:27017,node-rest-shop-shard-00-01-hge9w.mongodb.net:27017,node-rest-shop-shard-00-02-hge9w.mongodb.net:27017/test?ssl=true&replicaSet=Node-rest-shop-shard-0&authSource=admin&retryWrites=true');
 
 //CORS Cross-origin-resource-sharing
 //in an API it is normal to serve data to client with different origin
