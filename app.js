@@ -8,10 +8,12 @@ const mongoose = require('mongoose');
 
 const productRoutes = require ('./api/routes/products');
 const orderRoutes = require ('./api/routes/orders');
+const userRoutes = require('./api/routes/users');
 
 mongoose.connect('mongodb://node-shop:' + 
     process.env.MONGO_ATLAS_PW + 
-    '@node-rest-shop-shard-00-00-hge9w.mongodb.net:27017,node-rest-shop-shard-00-01-hge9w.mongodb.net:27017,node-rest-shop-shard-00-02-hge9w.mongodb.net:27017/test?ssl=true&replicaSet=Node-rest-shop-shard-0&authSource=admin&retryWrites=true');
+    '@node-rest-shop-shard-00-00-hge9w.mongodb.net:27017,node-rest-shop-shard-00-01-hge9w.mongodb.net:27017,node-rest-shop-shard-00-02-hge9w.mongodb.net:27017/test?ssl=true&replicaSet=Node-rest-shop-shard-0&authSource=admin&retryWrites=true',
+    {useNewUrlParser: true});
 
 //CORS Cross-origin-resource-sharing
 //in an API it is normal to serve data to client with different origin
@@ -19,6 +21,9 @@ mongoose.connect('mongodb://node-shop:' +
 
 
 app.use(morgan('dev'));
+//make a folder static -> public available
+//with this line i can access the upl
+app.use('/uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
@@ -44,6 +49,7 @@ app.use((res,req,next) => {
 //must pass trough the use 
 app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
+app.use('/users', userRoutes);
 
 app.use((req,res,next) =>{
     const error = new Error('Not found');
